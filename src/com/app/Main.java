@@ -1,6 +1,6 @@
 package com.app;
 
-import org.springframework.beans.factory.BeanFactory;
+import org.myspringframework.beans.factory.BeanFactory;
 
 public class Main {
 

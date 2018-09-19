@@ -1,4 +1,4 @@
-package org.springframework.beans.factory.stereotype;
+package org.myspringframework.beans.factory.stereotype;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Component {
+public @interface Service {
 
 }

@@ -1,6 +1,7 @@
-package org.springframework.beans.factory;
+package org.myspringframework.beans.factory;
 
-import org.springframework.beans.factory.stereotype.Component;
+import org.myspringframework.beans.factory.stereotype.Component;
+import org.myspringframework.beans.factory.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class BeanFactory {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         String basePath = basePackage.replace(".","/");
 
-        Enumeration<URL> resources = classLoader.getResources(basePackage.replace(".","/"));
+        Enumeration<URL> resources = classLoader.getResources(basePath);
 
         while (resources.hasMoreElements()){
             URL resUrl = resources.nextElement();
@@ -43,14 +44,13 @@ public class BeanFactory {
 
                     Class classObject = Class.forName(basePackage +"."+ className);
 
-                    if (classObject.isAnnotationPresent(Component.class)){
+                    if (isComponentOrService(classObject)){
                        // System.out.println("Component found: " + classObject.getName());
                        // Создаем объект класса
                        Object instance = classObject.newInstance();
                        String beanName = getIdForBean(className);
 
                        singletonBeans.put(beanName, instance);
-
                     }
                 }
             }
@@ -70,6 +70,10 @@ public class BeanFactory {
 
     private String getIdForBean(String beanClassName) {
         return beanClassName.substring(0,1).toLowerCase() + beanClassName.substring(1);
+    }
+
+    private boolean isComponentOrService(Class classObject){
+        return (classObject.isAnnotationPresent(Component.class) || classObject.isAnnotationPresent(Service.class));
     }
 
 }
