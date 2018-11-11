@@ -18,6 +18,8 @@ public class Main {
             beanFactory.injectBeanNames();
             // указываем нужным бинам фаборику бинов
             beanFactory.injectBeanFactorys();
+            // выполняем логику после заполнения свойств
+            beanFactory.initializeBeans();
 
             beanFactory.getBean("productService");
 

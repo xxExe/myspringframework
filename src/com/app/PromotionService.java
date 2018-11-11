@@ -2,11 +2,12 @@ package com.app;
 
 import org.myspringframework.beans.factory.BeanFactory;
 import org.myspringframework.beans.factory.BeanNameAware;
-import org.myspringframework.beans.factory.annotation.BeanFactoryAware;
+import org.myspringframework.beans.factory.BeanFactoryAware;
+import org.myspringframework.beans.factory.InitializatingBean;
 import org.myspringframework.beans.factory.annotation.stereotype.Component;
 
 @Component
-public class PromotionService implements BeanNameAware, BeanFactoryAware {
+public class PromotionService implements BeanNameAware, BeanFactoryAware, InitializatingBean {
 
     private String beanName;
     private BeanFactory beanFactory;
@@ -21,6 +22,11 @@ public class PromotionService implements BeanNameAware, BeanFactoryAware {
         this.beanFactory = beanFactory;
     }
 
+    @Override
+    public void afterPropertiesSet() {
+        System.out.println("afterPropertiesSet from " + this);
+    }
+
     public String getBeanName() {
         return beanName;
     }
@@ -28,5 +34,5 @@ public class PromotionService implements BeanNameAware, BeanFactoryAware {
     public BeanFactory getBeanFactory() {
         return beanFactory;
     }
-    
+
 }

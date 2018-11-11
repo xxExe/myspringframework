@@ -1,4 +1,4 @@
-package org.myspringframework.beans.factory.annotation;
+package org.myspringframework.beans.factory;
 
 import org.myspringframework.beans.factory.BeanFactory;
 

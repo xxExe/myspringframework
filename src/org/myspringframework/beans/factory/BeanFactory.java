@@ -1,7 +1,6 @@
 package org.myspringframework.beans.factory;
 
 import org.myspringframework.beans.factory.annotation.Autowired;
-import org.myspringframework.beans.factory.annotation.BeanFactoryAware;
 import org.myspringframework.beans.factory.annotation.stereotype.Component;
 import org.myspringframework.beans.factory.annotation.stereotype.Service;
 
@@ -102,6 +101,18 @@ public class BeanFactory {
         for (Map.Entry<String, Object> entry : singletonBeans.entrySet()) {
             if (entry.getValue() instanceof BeanFactoryAware) {
                 ((BeanFactoryAware) entry.getValue()).setBeanFactory(this);
+            }
+        }
+    }
+
+    /**
+     * Выполняет логику после выставления бинам свойств,
+     * для бинов, реализующих InitializatingBean
+     */
+    public void initializeBeans(){
+        for (Map.Entry<String, Object> entry : singletonBeans.entrySet()) {
+            if (entry.getValue() instanceof InitializatingBean) {
+                ((InitializatingBean) entry.getValue()).afterPropertiesSet();
             }
         }
     }
