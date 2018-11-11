@@ -84,6 +84,17 @@ public class BeanFactory {
     }
 
     /**
+     * Выставляет имена бинам, реализующим BeanNameAware
+     */
+    public void injectBeanNames() {
+        for (Map.Entry<String, Object> entry : singletonBeans.entrySet()) {
+            if (entry.getValue() instanceof BeanNameAware) {
+                ((BeanNameAware) entry.getValue()).setBeanNAme(entry.getKey());
+            }
+        }
+    }
+
+    /**
      * Устанавливаем объекту targetObject в поле targetField значение valueObject
      * Формирует название setter-а и вызывает его
      * <p>
@@ -111,7 +122,6 @@ public class BeanFactory {
         }
 
     }
-
 
     private String getNameWithoutExtension(String fileName) {
         return fileName.substring(0, fileName.lastIndexOf("."));

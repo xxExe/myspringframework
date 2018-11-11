@@ -15,8 +15,13 @@ public class Main {
             beanFactory.instantiate("com.app");
             // выставляем значения в поля Autowired
             beanFactory.populateProperties();
+            // указываем нужным бинам их имена
+            beanFactory.injectBeanNames();
 
-            beanFactory.getBean("ProductService");
+            beanFactory.getBean("productService");
+
+            PromotionService promotionService = (PromotionService) beanFactory.getBean("promotionService");
+            System.out.println(promotionService.getBeanName());
 
         } catch (Exception e) {
             e.printStackTrace();
