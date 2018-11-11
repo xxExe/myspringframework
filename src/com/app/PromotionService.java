@@ -1,6 +1,6 @@
 package com.app;
 
-import org.myspringframework.beans.factory.stereotype.Component;
+import org.myspringframework.beans.factory.annotation.stereotype.Component;
 
 @Component
 public class PromotionService {

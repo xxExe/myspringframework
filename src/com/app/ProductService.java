@@ -1,10 +1,12 @@
 package com.app;
 
-import org.myspringframework.beans.factory.stereotype.Component;
+import org.myspringframework.beans.factory.annotation.Autowired;
+import org.myspringframework.beans.factory.annotation.stereotype.Component;
 
 @Component
 public class ProductService {
 
+    @Autowired
     private PromotionService promotionService;
 
     public PromotionService getPromotionService() {

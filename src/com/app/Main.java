@@ -11,8 +11,12 @@ public class Main {
         BeanFactory beanFactory = new BeanFactory();
         try {
 
+            // ищем все бины в пакете
             beanFactory.instantiate("com.app");
+            // выставляем значения в поля Autowired
+            beanFactory.populateProperties();
 
+            beanFactory.getBean("ProductService");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -20,7 +24,6 @@ public class Main {
 
 
         System.out.println("----End----");
-
 
 
     }
