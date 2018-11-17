@@ -1,9 +1,10 @@
 package com.app;
 
 import org.myspringframework.beans.factory.BeanFactory;
-import org.myspringframework.beans.factory.BeanNameAware;
 import org.myspringframework.beans.factory.BeanFactoryAware;
+import org.myspringframework.beans.factory.BeanNameAware;
 import org.myspringframework.beans.factory.InitializatingBean;
+import org.myspringframework.beans.factory.annotation.PostConstruct;
 import org.myspringframework.beans.factory.annotation.stereotype.Component;
 
 @Component
@@ -33,6 +34,11 @@ public class PromotionService implements BeanNameAware, BeanFactoryAware, Initia
 
     public BeanFactory getBeanFactory() {
         return beanFactory;
+    }
+
+    @PostConstruct
+    private void beforeInitialize() {
+        System.out.println(this + ".beforeInitialize");
     }
 
 }

@@ -11,13 +11,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BeanFactory {
 
     private Map<String, Object> singletonBeans = new HashMap<>();
+
+    private List<BeanPostProcessor> postProcessorList = new ArrayList<>();
 
     public Object getBean(String name) {
         return singletonBeans.get(name);
@@ -97,7 +101,7 @@ public class BeanFactory {
     /**
      * Выставляет значение BeanFactory бинам, реализующим BeanFactoryAware
      */
-    public void injectBeanFactorys(){
+    public void injectBeanFactorys() {
         for (Map.Entry<String, Object> entry : singletonBeans.entrySet()) {
             if (entry.getValue() instanceof BeanFactoryAware) {
                 ((BeanFactoryAware) entry.getValue()).setBeanFactory(this);
@@ -107,14 +111,32 @@ public class BeanFactory {
 
     /**
      * Выполняет логику после выставления бинам свойств,
-     * для бинов, реализующих InitializatingBean
+     * Выполняет обработку бинов процессорами
+     * <p>
+     * 1. Выполняется beforePropertiesSet постпроцессоров
+     * 2. выполняется afterPropertiesSet(при наличии) бина
+     * 3. выполняется postProcessorList постпроцессоров
      */
-    public void initializeBeans(){
+    public void initializeBeans() {
         for (Map.Entry<String, Object> entry : singletonBeans.entrySet()) {
+            Object bean = entry.getValue();
+            String name = entry.getKey();
+            for (BeanPostProcessor beanPostProcessor : postProcessorList) {
+                beanPostProcessor.beforePropertiesSet(bean, name);
+            }
+
             if (entry.getValue() instanceof InitializatingBean) {
                 ((InitializatingBean) entry.getValue()).afterPropertiesSet();
             }
+
+            for (BeanPostProcessor beanPostProcessor : postProcessorList) {
+                beanPostProcessor.afterPropertiesSet(bean, name);
+            }
         }
+    }
+
+    public void addPostProcessor(BeanPostProcessor beanPostProcessor) {
+        postProcessorList.add(beanPostProcessor);
     }
 
     /**

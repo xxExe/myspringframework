@@ -1,5 +1,7 @@
 package com.app;
 
+import com.app.processor.ConsoleOutputPostProcessor;
+import com.app.processor.PostConstructProcessor;
 import org.myspringframework.beans.factory.BeanFactory;
 
 public class Main {
@@ -8,6 +10,9 @@ public class Main {
         System.out.println("---Start---");
 
         BeanFactory beanFactory = new BeanFactory();
+        beanFactory.addPostProcessor(new ConsoleOutputPostProcessor());
+        beanFactory.addPostProcessor(new PostConstructProcessor());
+
         try {
 
             // ищем все бины в пакете
