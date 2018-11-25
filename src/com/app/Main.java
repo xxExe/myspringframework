@@ -28,6 +28,9 @@ public class Main {
 
             beanFactory.getBean("productService");
 
+            // закрываем фабрику
+            beanFactory.close();
+
             PromotionService promotionService = (PromotionService) beanFactory.getBean("promotionService");
             System.out.println(promotionService.getBeanName());
             System.out.println(promotionService.getBeanFactory());

@@ -1,6 +1,7 @@
 package org.myspringframework.beans.factory;
 
 import org.myspringframework.beans.factory.annotation.Autowired;
+import org.myspringframework.beans.factory.annotation.PreDestroy;
 import org.myspringframework.beans.factory.annotation.stereotype.Component;
 import org.myspringframework.beans.factory.annotation.stereotype.Service;
 
@@ -125,8 +126,8 @@ public class BeanFactory {
                 beanPostProcessor.beforePropertiesSet(bean, name);
             }
 
-            if (entry.getValue() instanceof InitializatingBean) {
-                ((InitializatingBean) entry.getValue()).afterPropertiesSet();
+            if (bean instanceof InitializatingBean) {
+                ((InitializatingBean) bean).afterPropertiesSet();
             }
 
             for (BeanPostProcessor beanPostProcessor : postProcessorList) {
@@ -137,6 +138,25 @@ public class BeanFactory {
 
     public void addPostProcessor(BeanPostProcessor beanPostProcessor) {
         postProcessorList.add(beanPostProcessor);
+    }
+
+    /**
+     * Закрывает фабрику,
+     * вызывает у бинов методы, помеченные @PreDestroy;
+     * вызывает у бинов, реализующих DisposableBean метод destroy()
+     */
+    public void close() throws InvocationTargetException, IllegalAccessException {
+        for (Object bean : singletonBeans.values()) {
+            for (Method method : bean.getClass().getDeclaredMethods()) {
+                if (method.isAnnotationPresent(PreDestroy.class)) {
+                    method.invoke(bean);
+                }
+            }
+
+            if (bean instanceof DisposableBean) {
+                ((DisposableBean) bean).destroy();
+            }
+        }
     }
 
     /**
