@@ -3,8 +3,11 @@ package com.app;
 import com.app.processor.ConsoleOutputPostProcessor;
 import com.app.processor.PostConstructProcessor;
 import org.myspringframework.beans.factory.BeanFactory;
+import org.myspringframework.beans.factory.context.ApplicationContext;
 
 public class Main {
+
+    private static final String basePackage = "com.app";
 
     public static void main(String[] args) {
         System.out.println("---Start---");
@@ -15,8 +18,10 @@ public class Main {
 
         try {
 
-            // ищем все бины в пакете
-            beanFactory.instantiate("com.app");
+            ApplicationContext applicationContext = new ApplicationContext(basePackage);
+
+       /*     // ищем все бины в пакете
+            beanFactory.instantiate(basePackage);
             // выставляем значения в поля Autowired
             beanFactory.populateProperties();
             // указываем нужным бинам их имена
@@ -28,12 +33,12 @@ public class Main {
 
             beanFactory.getBean("productService");
 
-            // закрываем фабрику
-            beanFactory.close();
-
             PromotionService promotionService = (PromotionService) beanFactory.getBean("promotionService");
             System.out.println(promotionService.getBeanName());
             System.out.println(promotionService.getBeanFactory());
+
+            // закрываем фабрику
+            beanFactory.close();*/
 
         } catch (Exception e) {
             e.printStackTrace();

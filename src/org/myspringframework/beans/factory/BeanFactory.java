@@ -29,6 +29,13 @@ public class BeanFactory {
     }
 
     /**
+     * Полчуить все бины
+     */
+    public Map<String, Object> getBeans(){
+        return singletonBeans;
+    }
+
+    /**
      * Создает экземпляры классов, из пакета basePackage
      * обрабатывая аннотации @Component и @Service
      * и кладет их в Map singletonBeans
@@ -145,11 +152,16 @@ public class BeanFactory {
      * вызывает у бинов методы, помеченные @PreDestroy;
      * вызывает у бинов, реализующих DisposableBean метод destroy()
      */
-    public void close() throws InvocationTargetException, IllegalAccessException {
+    public void close() {
         for (Object bean : singletonBeans.values()) {
             for (Method method : bean.getClass().getDeclaredMethods()) {
                 if (method.isAnnotationPresent(PreDestroy.class)) {
-                    method.invoke(bean);
+                    try {
+                        method.invoke(bean);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
